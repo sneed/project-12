@@ -19,36 +19,36 @@ Before we begin, let us make some changes to our Jenkins job – now every new c
 
 `sudo mkdir /home/ubuntu/ansible-config-artifact`
 
-![Create folder](../project-12/images/create-folder.png)
+![Create folder](../images/create-folder.png)
 
 2. Change permissions to this directory, so Jenkins could save files there – <mark>chmod -R 0777 /home/ubuntu/ansible-config-artifact</mark>
 and also <mark>sudo chown -R jenkins:jenkins /home/ubuntu/ansible-config-artifact</mark>
 
 3. Go to Jenkins web console -> Manage Jenkins -> Manage Plugins -> on <mark>Available</mark> tab search for <mark>Copy Artifact</mark> and install this plugin without restarting Jenkins
 
-![Copy Artifacts plugin](../project-12/images/jenkinsplugin-manager.png)
+![Copy Artifacts plugin](../images/jenkinsplugin-manager.png)
 
 4. Create a new Freestyle project (you have done it in Project 9) and name it save_artifacts.
 
-![Crteate new Freestyle project](../project-12/images/project-saveartifacts.png)
+![Crteate new Freestyle project](../images/project-saveartifacts.png)
 
 5. This project will be triggered by completion of your existing ansible project. Configure it accordingly:
 
-![Configure step](../project-12/images/configurestep.png)
+![Configure step](../images/configurestep.png)
 
 Note: You can configure number of builds to keep in order to save space on the server, for example, you might want to keep only last 2 or 5 build results. You can also make this change to your ansible job
 
 6. The main idea of save_artifacts project is to save artifacts into /home/ubuntu/ansible-config-artifact directory. To achieve this, create a Build step and choose Copy artifacts from other project, specify ansible as a source project and /home/ubuntu/ansible-config-artifact as a target directory.
 
-![Build step](../project-12/images/buildstep.png)
+![Build step](../images/buildstep.png)
 
 7. Test your set up by making some change in README.MD file inside your ansible-config-mgt repository (right inside master branch).
    If both Jenkins jobs have completed one after another – you shall see your files inside /home/ubuntu/ansible-config-artifact directory and it will be updated with every commit to your master branch.
 
-![Read me commit Git hub](../project-12/images/githubansible-readmeupdate.png)
-![Update ansible](../project-12/images/updatereadme-jenkinsansible.png)
-![Update save_artifacts](../project-12/images/jenkinsupdate-saveartifacts.png)
-![Files in /home/ubuntu/ansible-config-artifact ](../project-12/images/ansibleconfig-artifact.png)
+![Read me commit Git hub](../images/githubansible-readmeupdate.png)
+![Update ansible](../images/updatereadme-jenkinsansible.png)
+![Update save_artifacts](../images/jenkinsupdate-saveartifacts.png)
+![Files in /home/ubuntu/ansible-config-artifact ](../images/ansibleconfig-artifact.png)
 
 Now your Jenkins pipeline is more neat and clean.
 
@@ -76,7 +76,7 @@ Let see code re-use in action by importing other playbooks.
 - hosts: all
 - import_playbook: ../static-assignments/common.yml
 ```
-![Update site.yml](../project-12/images/site-yml.png)
+![Update site.yml](../images/site-yml.png)
 
 The code above uses built in [import_playbook](https://docs.ansible.com/ansible/latest/collections/ansible/builtin/import_playbook_module.html) Ansible module.
 
@@ -93,7 +93,7 @@ Your folder structure should look like this;
 └── playbooks
     └── site.yml
 ```
-![Folder structure](../project-12/images/folder-structure.png)
+![Folder structure](../images/folder-structure.png)
 
 5. Run ansible-playbook command against the dev environment
 Since you need to apply some tasks to your dev servers and wireshark is already installed – you can go ahead and create another playbook under static-assignments and name it common-del.yml. In this playbook, configure deletion of wireshark utility.
@@ -127,30 +127,30 @@ Since you need to apply some tasks to your dev servers and wireshark is already 
 
 ```
 
-![Wireshark deletion configuration](../project-12/images/wireshark-deletionconfig.png)
+![Wireshark deletion configuration](../images/wireshark-deletionconfig.png)
 
 update site.yml with - import_playbook: ../static-assignments/common-del.yml instead of common.yml and run it against dev servers:
 
-![Update site.yml ](../project-12/images/update-siteyml.png)
+![Update site.yml ](../images/update-siteyml.png)
 
 update /etc/hosts with server private ip addresses
 
-![Private server ip addresses](../project-12/images/etc-hosts.png)
+![Private server ip addresses](../images/etc-hosts.png)
 
 ```
 cd /home/ubuntu/ansible-config-mgt/
 
 ansible-playbook -i inventory/dev.yml playbooks/site.yaml
 ```
-![Runsible playbook](../project-12/images/run-ansibleplaybook.png)
+![Runsible playbook](../images/run-ansibleplaybook.png)
 
 Make sure that wireshark is deleted on all the servers by running wireshark --version
 
-![Db server wireshark removed](../project-12/images/db-wiresharkversion.png)
-![NFS server wireshark removed](../project-12/images/nfs-wiresharkversion.png)
-![LB wirehsark removed](../project-12/images/lb-wiresharkversion.png)
-![Webserver1 wireshark removed](../project-12/images/webserver1-wiresharkversion.png)
-![Webserver2 wireshark removed](../project-12/images/webserver2-wiresharkversion.png)
+![Db server wireshark removed](../images/db-wiresharkversion.png)
+![NFS server wireshark removed](../images/nfs-wiresharkversion.png)
+![LB wirehsark removed](../images/lb-wiresharkversion.png)
+![Webserver1 wireshark removed](../images/webserver1-wiresharkversion.png)
+![Webserver2 wireshark removed](../images/webserver2-wiresharkversion.png)
 
 Now you have learned how to use import_playbooks module and you have a ready solution to install/delete packages on multiple servers with just one command.
 
@@ -164,7 +164,7 @@ We have our nice and clean dev environment, so let us put it aside and configure
 1. Launch 2 fresh EC2 instances using RHEL 8 image, we will use them as our uat servers, so give them names accordingly – Web1-UAT and Web2-UAT.
 Tip: Do not forget to stop EC2 instances that you are not using at the moment to avoid paying extra. For now, you only need 2 new RHEL 8 servers as Web Servers and 1 existing Jenkins-Ansible server up and running.
 
-![2 EC2 instances RHEL 8](../project-12/images/RHE8-instances.png)
+![2 EC2 instances RHEL 8](../images/RHE8-instances.png)
 
 2. To create a role, you must create a directory called roles/, relative to the playbook file or in /etc/ansible/ directory.
 There are two ways how you can create this folder structure:
@@ -201,7 +201,7 @@ The entire folder structure should look like below, but if you create it manuall
         └── main.yml
 
 ```
-![Folder structure](../project-12/images/file-structure.png)
+![Folder structure](../images/file-structure.png)
 
 
 After removing unnecessary directories and files, the roles structure should look like this
@@ -220,7 +220,7 @@ After removing unnecessary directories and files, the roles structure should loo
 └── templates
 ```
 
-![role structure](../project-12/images/role-webserver-structure.png)
+![role structure](../images/role-webserver-structure.png)
 
 3. Update your inventory ansible-config-mgt/inventory/uat.yml file with IP addresses of your 2 UAT Web servers
 NOTE: Ensure you are using ssh-agent to ssh into the Jenkins-Ansible instance just as you have done in project 11;
@@ -236,7 +236,7 @@ For Linux users – [ssh-agent on linux](https://www.youtube.com/watch?v=OplGrY7
 
 <Web2-UAT-Server-Private-IP-Address> ansible_ssh_user='ec2-user' 
 ```
-![UAT webservers](../project-12/images/uat-webservers.png)
+![UAT webservers](../images/uat-webservers.png)
 
 4. In /etc/ansible/ansible.cfg file uncomment roles_path string and provide a full path to your roles directory roles_path    = /home/ubuntu/ansible-config-mgt/roles, so Ansible could know where to find configured roles.
 
@@ -288,7 +288,7 @@ Your <mark>main.yml</mark> may consist of following tasks:
     path: /var/www/html/html
     state: absent
 ```
-![logic-webserverole](../project-12/images/task-mainyml.png)
+![logic-webserverole](../images/task-mainyml.png)
 
 ## REFERENCE WEBSERVER ROLE
 
@@ -302,7 +302,7 @@ Within the static-assignments folder, create a new assignment for uat-webservers
   roles:
      - webserver
 ```
-![static-assignments uat-webservers](../project-12/images/staticassignmnt-uatwebserver.png)
+![static-assignments uat-webservers](../images/staticassignmnt-uatwebserver.png)
 
 Remember that the entry point to our ansible configuration is the site.yml file. Therefore, you need to refer your uat-webservers.yml role inside site.yml.
 
@@ -318,7 +318,7 @@ So, we should have this in site.yml
 
 ```
 
-![Uat-servers in site.yml](../project-12/images/site-yml2.png)
+![Uat-servers in site.yml](../images/site-yml2.png)
 
 ### Step 5 – Commit & Test
 Commit your changes, create a Pull Request and merge them to master branch, make sure webhook triggered two consequent Jenkins jobs, they ran successfully and copied all the files to your Jenkins-Ansible server into /home/ubuntu/ansible-config-mgt/ directory.
@@ -327,19 +327,19 @@ Now run the playbook against your uat inventory and see what happens:
 
 `sudo ansible-playbook -i /home/ubuntu/ansible-config-mgt/inventory/uat.yml /home/ubuntu/ansible-config-mgt/playbooks/site.yaml `
 
-![run playbook uat.yml](../project-12/images/runplaybookinv-uat-webservers.png)
+![run playbook uat.yml](../images/runplaybookinv-uat-webservers.png)
 
 You should be able to see both of your UAT Web servers configured and you can try to reach them from your browser:
 
 http://<Web1-UAT-Server-Public-IP-or-Public-DNS-Name>/index.php
-![Web1-UAT](../project-12/images/Web1-UAT.png)
+![Web1-UAT](../images/Web1-UAT.png)
 or
 
 http://<Web2-UAT-Server-Public-IP-or-Public-DNS-Name>/index.php
 
 
-![Web2-UAT](../project-12/images/Web2-UAT.png)
+![Web2-UAT](../images/Web2-UAT.png)
 
 Your Ansible architecture now looks like this:
 
-![Ansible architecture](../project-12/images/ansible-architecture.png)
+![Ansible architecture](../images/ansible-architecture.png)
