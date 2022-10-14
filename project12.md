@@ -240,10 +240,12 @@ For Linux users – [ssh-agent on linux](https://www.youtube.com/watch?v=OplGrY7
 
 4. In /etc/ansible/ansible.cfg file uncomment roles_path string and provide a full path to your roles directory roles_path    = /home/ubuntu/ansible-config-mgt/roles, so Ansible could know where to find configured roles.
 
+![role_path](images/role-path.png)
+
 5. It is time to start adding some logic to the webserver role. Go into tasks directory, and within the main.yml file, start writing configuration tasks to do the following:
 
 - Install and configure Apache (httpd service)
-- Clone Tooling website from GitHub https://github.com/<your-name>/tooling.git.
+- Clone Tooling website from GitHub https://github.com/sneed/tooling.git.
 - Ensure the tooling website code is deployed to /var/www/html on each of 2 UAT Web servers.
 - Make sure httpd service is started
 
